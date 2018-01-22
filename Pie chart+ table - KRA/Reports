@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="refresh" content="15;url=Index" />
+
+    <title>KRA - My Dashboard View</title>
+    <link href="favicon.ico?v=2" type="image/x-icon" rel="shortcut icon" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/swiper.css">
+    <link rel="stylesheet" href="~/css/master.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="js/html5shiv.min.js"></script>
+        <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', { 'packages': ['corechart'] });
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows([
+                ['John', 3],
+                ['Katieno', 1],
+                ['Olives', 1],
+                ['Zucchini', 1],
+                ['Pepperoni', 2]
+            ]);
+
+            // Set chart options
+            var options = {
+                'title': 'How Much Pizza I Ate Last Night',
+                'width': 770,
+                'height': 583
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+
+        }
+    </script>
+
+
+
+</head>
+
+<body class="view-three">
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <img src="~/images/kra-logo.png" class="logo img-responsive" alt="Expertflow">
+                    <h1>My Dashboard View</h1>
+                    <h2>You Speak, We Listen. We are here to serve</h2>
+                    <div id="clock" class="time"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+
+        <div class="container-fluid">
+            <div class="row">
+
+
+
+                <div class="col-md-6 labels">
+
+                    <div id="chart_div"></div>
+
+
+                </div>
+
+                <div class="col-md-6 gadgets">
+                        <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table table-csa-ext">
+                                    <div class="thead title">
+                                        <span class="th">NOT READY REASON</span>
+                                        
+                                        <span class="th">NO OF AGENTS</span>
+                                        <span class="th">REASON CODE</span>
+
+                                        
+                                        
+                                    </div>
+                                    <div class="swiper-container">
+                                        <div class="swiper-wrapper">
+                                            @foreach (var val3 in ViewData["Reports"] as List<Wallboard_KRA.Controllers.Report>)
+                            {
+
+                                <div class="tr swiper-slide">
+                                    @if (((@val3.States).Substring(0, 5)) == "Ready")
+                    {
+                        <span class="td">@val3.AgentNames</span>
+                        
+                        <span class="td cell-green">@val3.States</span>
+                        <span class="td cell-orange">@val3.ReasonCodes</span>
+                       
+                        
+                        
+    }
+    else if (((@val3.States).Substring(0, 7)) == "Talking")
+    {
+                <span class="td">@val3.AgentNames</span>
+                
+                <span class="td cell-blue">@val3.States</span>
+                <span class="td cell-orange">@val3.ReasonCodes</span>
+               
+                
+                
+}
+else if (((@val3.States).Substring(0, 9)) == "Not Ready")
+{
+                <span class="td">@val3.AgentNames</span>
+                
+                <span class="td cell-red">@val3.States</span>
+                <span class="td cell-orange">@val3.ReasonCodes</span>
+              
+                
+                
+}
+else
+{
+                <span class="td">@val3.AgentNames</span>
+                
+                <span class="td cell-lime">@val3.States</span>
+                <span class="td cell-orange">@val3.ReasonCodes</span>
+                
+                
+                
+}
+                                </div>
+            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+      
+    </main>
+
+    <footer>
+        <p>&copy; 2017 ExpertFlow &ndash; All rights reserved.</p>
+    </footer>
+
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <!-- Time JS -->
+    <script>
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    var date = new Date()
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var seconds = date.getSeconds();
+    var ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds;
+    var strTime = hours + ':' + minutes + ':' + seconds;
+    document.getElementById("clock").innerHTML=   monthNames[date.getMonth()] + " " + date.getDate() + "," + date.getFullYear() + " " + strTime;
+    </script>
+    <!-- Swiper JS -->
+    <script src="~/js/swiper.min.js"></script>
+    <script>
+        var rows = @ViewBag.totalreports;
+        if(rows===0 || rows===1 ||rows===2 ||rows===3 ||rows===4 ||rows===5 ||rows===6 ||rows===7 || rows===8){
+            var swiper = new Swiper('.table-csa-ext .swiper-container', {
+                direction: 'vertical',
+                slidesPerView: '8',
+                speed: 1000,
+                autoplay: 2000,
+                loop:false,
+            });
+        }
+        else{
+            var swiper = new Swiper('.table-csa-ext .swiper-container', {
+                direction: 'vertical',
+                slidesPerView: '8',
+                speed: 1000,
+                autoplay: 2000,
+                loop: true,
+            });
+        }
+    </script>
+</body>
+</html>
